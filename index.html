@@ -1,183 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-    <style>
-        @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap");
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <script src="login.js"></script>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Quicksand", sans-serif;
-        }
-
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: #111;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .ring {
-            position: relative;
-            width: 500px;
-            height: 500px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .ring i {
-            position: absolute;
-            inset: 0;
-            border: 2px solid #fff;
-            transition: 0.5s;
-        }
-
-        .ring i:nth-child(1) {
-            border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
-            animation: animate 6s linear infinite;
-        }
-
-        .ring i:nth-child(2) {
-            border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
-            animation: animate 4s linear infinite;
-        }
-
-        .ring i:nth-child(3) {
-            border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
-            animation: animate2 10s linear infinite;
-        }
-
-        .ring:hover i {
-            border: 6px solid var(--clr);
-            filter: drop-shadow(0 0 20px var(--clr));
-        }
-
-        @keyframes animate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes animate2 {
-            0% { transform: rotate(360deg); }
-            100% { transform: rotate(0deg); }
-        }
-
-        .login {
-            position: absolute;
-            width: 300px;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .login h2 {
-            font-size: 2em;
-            color: #fff;
-        }
-
-        .login .inputBx {
-            position: relative;
-            width: 100%;
-            margin-bottom: 15px;
-        }
-
-        .login .inputBx input {
-            width: 100%;
-            padding: 12px 20px;
-            background: transparent;
-            border: 2px solid #fff;
-            border-radius: 40px;
-            font-size: 1.2em;
-            color: #fff;
-            outline: none;
-            margin-bottom: 10px;
-        }
-
-        .login .inputBx input[type="submit"] {
-            width: 100%;
-            background: linear-gradient(45deg, #2F4156, #567C8D);
-            border: none;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .login .inputBx input::placeholder {
-            color: rgba(255, 255, 255, 0.75);
-        }
-
-        .login .links {
-            display: flex;
-            justify-content: space-between;
-            padding: 0 20px;
-            width: 100%;
-        }
-
-        .login .links a {
-            color: #fff;
-            text-decoration: none;
-        }
-
-    </style>
+  <link rel="stylesheet" href="login.css">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap");
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Quicksand", sans-serif;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #111;
+      width: 100%;
+      overflow: hidden;
+    }
+    .ring {
+      position: relative;
+      width: 500px;
+      height: 500px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .ring i {
+      position: absolute;
+      inset: 0;
+      border: 2px solid #fff;
+      transition: 0.5s;
+    }
+    .ring i:nth-child(1) {
+      border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+      animation: animate 6s linear infinite;
+    }
+    .ring i:nth-child(2) {
+      border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+      animation: animate 4s linear infinite;
+    }
+    .ring i:nth-child(3) {
+      border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+      animation: animate2 10s linear infinite;
+    }
+    .ring:hover i {
+      border: 6px solid var(--clr);
+      filter: drop-shadow(0 0 20px var(--clr));
+    }
+    @keyframes animate {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    @keyframes animate2 {
+      0% {
+        transform: rotate(360deg);
+      }
+      100% {
+        transform: rotate(0deg);
+      }
+    }
+    .login {
+      position: absolute;
+      width: 300px;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .login h2 {
+      font-size: 2em;
+      color: #fff;
+    }
+    .login .inputBx {
+      position: relative;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+    .login .inputBx input {
+      position: relative;
+      width: 100%;
+      padding: 12px 20px;
+      background: transparent;
+      border: 2px solid #fff;
+      border-radius: 40px;
+      font-size: 1.2em;
+      color: #fff;
+      outline: none;
+    }
+    .login .inputBx input::placeholder {
+      color: rgba(255, 255, 255, 0.75);
+    }
+    .login .inputBx input[type="submit"] {
+      width: 100%;
+      background: linear-gradient(45deg, #2F4156, #567C8D);
+      border: none;
+      cursor: pointer;
+    }
+    .login .links {
+      display: flex;
+      justify-content: space-between;
+    }
+    .login .links a {
+      color: #fff;
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
-
-    <div class="ring">
-        <i style="--clr:#2F4156;"></i>
-        <i style="--clr:#567C8D;"></i>
-        <i style="--clr:#C8D9E6;"></i>
-        <div class="login">
-            <h2>Login</h2>
-            <form id="loginForm">
-                <div class="inputBx">
-                    <input type="text" id="username" placeholder="Username" required>
-                </div>
-                <div class="inputBx">
-                    <input type="password" id="password" placeholder="Password" required>
-                </div>
-                <div class="inputBx">
-                    <input type="submit" value="Sign in">
-                </div>
-            </form>
+  <div class="ring">
+    <i style="--clr:#2F4156;"></i>
+    <i style="--clr:#567C8D;"></i>
+    <i style="--clr:#C8D9E6;"></i>
+    <div class="login">
+      <h2>Login</h2>
+      <form id="loginForm">
+        <div class="inputBx">
+          <input type="text" id="email" placeholder="Email" required>
         </div>
+        <div class="inputBx">
+          <input type="password" id="password" placeholder="Password" required>
+        </div>
+        <!-- Loader (Hidden by Default) -->
+<div id="loader" class="loader" style="display: none;"></div>
+
+<!-- Message Box (Hidden by Default) -->
+<p id="message" style="display: none; font-size: 14px; text-align: center;"></p>
+
+        <div class="inputBx">
+          <input type="submit" value="Sign in">
+        </div>
+      </form>
     </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.getElementById("loginForm").addEventListener("submit", function(event) {
-                event.preventDefault();
+  </div>
 
-                let username = document.getElementById("username").value;
-                let password = document.getElementById("password").value;
-
-                if (username && password) {
-                    sessionStorage.setItem("loggedIn", "true");
-                    alert("Login successful!");
-                    window.location.href = "home.html"; // Redirect to home page
-                } else {
-                    alert("Please enter both username and password.");
-                }
-            });
-        });
-        document.querySelector(".vote-button").addEventListener("click", function () {
-    let isLoggedIn = localStorage.getItem("isLoggedIn"); // Assuming login status is stored in localStorage
-    if (isLoggedIn === "true") {
-        window.location.href = "instructions.html"; // Redirect to instructions page if logged in
-    } else {
-        window.location.href = "index.html"; // Redirect to login page if not logged in
-    }
-});
-
-    </script>
-
+  <script src="login.js"></script>
 </body>
 </html>
