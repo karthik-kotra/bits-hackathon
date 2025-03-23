@@ -1,3 +1,25 @@
+document.getElementById("loginForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+
+    // Simulate fetching user data from CSV (you need a backend to validate this properly)
+    let users = JSON.parse(localStorage.getItem("users")) || {}; // This should be replaced with a real backend call
+
+    if (users[email] && users[email].password === password) {
+        if (users[email].voted) {
+            alert("You have already voted.");
+            window.location.href = "index.html"; // Redirect to main page
+        } else {
+            localStorage.setItem("currentUser", email);
+            window.location.href = "voting.html"; // Redirect to voting page
+        }
+    } else {
+        alert("Invalid email or password.");
+    }
+});
+
 document.getElementById("loginForm").addEventListener("submit", async function (event) {
     event.preventDefault(); // Prevent form refresh
 
