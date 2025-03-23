@@ -22,38 +22,38 @@
         canvas { position: absolute; top: 0; left: 0; z-index: -1; }
 
         .box {
-            background: rgba(64, 80, 112, 0.95);
+            background: rgb(87,124,142,0.2);
             padding: 40px;
             border-radius: 20px;
             width: 650px;
-            box-shadow: 0px 0px 30px rgba(0, 255, 255, 0.4);
             position: relative;
             z-index: 1;
         }
 
         .instruction {
+            background-color: rgb(87,124,142,0.2) ;
             padding: 20px;
             border-radius: 20px;
             margin: 15px 0;
             font-size: 22px;
             font-weight: bold;
             color: white;
-            text-shadow: 0px 0px 10px rgba(0, 255, 255, 0.6);
-            box-shadow: 0px 0px 15px rgba(0, 255, 255, 0.4);
-            border: 2px solid rgba(0, 255, 255, 0.6);
+            text-shadow: 0px 0px 10pxrgb(87,124,142);
+            box-shadow: 0px 0px 15px rgb(87,124,142);
+            border: 2px solid rgb(87,124,142);
         }
 
         #calendar-countdown {
             font-size: 36px;
             font-weight: bold;
-            background: linear-gradient(to right, #00CED1, #008B8B);
+            background: linear-gradient(to right, rgb(87,124,142), rgb(47,65,87));
             color: white;
             padding: 20px;
             display: inline-block;
             border-radius: 15px;
-            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0px 8px 15px rgb(47,65,87);
             position: relative;
-            margin: 25px 0;
+            margin: 5px 0;
         }
 
         #progress-container {
@@ -68,7 +68,7 @@
         #progress-bar {
             width: 100%;
             height: 100%;
-            background: linear-gradient(to right, #00CED1, #008B8B);
+            background: linear-gradient(to right,rgb(87,124,142),rgb(47,65,87) );
             transform: scaleX(1);
             transform-origin: left;
             transition: transform 1s linear;
@@ -78,11 +78,11 @@
             padding: 15px 30px;
             font-size: 20px;
             cursor: pointer;
-            background-color: #008080;
+            background-color: rgb(47,65,87);
             color: white;
             border: none;
             border-radius: 15px;
-            box-shadow: 0px 0px 15px rgba(0, 128, 128, 0.8);
+            box-shadow: 0px 0px 15px rgb(47,65,87);
             transition: 0.3s;
             margin-top: 30px;
         }
@@ -98,11 +98,11 @@
     <canvas id="bg"></canvas>
     
     <div class="box">
-        <h1 style="color: white;">Welcome to Orion University Voting</h1>
-        <div class="instruction"> Step 1: Select your desired Party from the list.</div>
-        <div class="instruction"> Step 2: After selection, reconfirm your choice.</div>
-        <div class="instruction"> Step 3: Your vote is securely cast and recorded!</div>
-        
+        <h1 style="color: white; font: tektur;">INSTRUCTIONS</h1>
+        <div class="instruction"> Select your preferred candidate and confirm your choice. Double-check before submitting, as changes may not be allowed after submission.<br><br>
+            Avoid refreshing or closing the browser while voting, as it may cause errors or invalidate your vote.<br><br>
+            Click the "Submit" button to finalize your vote, then log out to ensure security.<br><br>
+            Use your registered credentials (student ID and password) to log in to the voting portal. Do not share your login details with anyone.</div>
         <p>Voting will be enabled in:</p>
         <div id="calendar-countdown">5</div>
 
