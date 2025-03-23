@@ -12,7 +12,7 @@ document.getElementById("loginForm").addEventListener("submit", async function (
 
     try {
         // Fetch student credentials from JSON
-        const response = await fetch("students.json");
+        const response = await fetch("orion_university_students.csv");
         const students = await response.json();
 
         // Simulate delay for buffer effect
