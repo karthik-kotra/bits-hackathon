@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Election</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" id="themeStylesheet" href="ce.css">
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+        @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap");
+
+        :root {
+            --header-color: #1e224e;
+            --carousel-transparent: #2f335c;
+            --header-button: #4c507e;
+            --vote-button: #404573;
+            --background-color: #0d1b2a;
+            --text-light: #ffffff;
+            --header-height: 70px;
+            --star-color: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            text-decoration: none;
+        }
+        html{
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: "Montserrat", sans-serif;
+            background:  #020a1a;;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .starry-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background: var(--star-color);
+            border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+            transition: transform 0.2s ease;
+            width: 4px; /* Increase size */
+            height: 4px;
+    
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .scene {
+            min-height: 100vh;
+            padding-top: var(--header-height);
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            height: var(--header-height);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo img {
+            height: 120px;
+            width: 120px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .nav-button {
+            background: transparent;
+            border: 2px solid var(--text-light);
+            border-radius: 15px;
+            padding: 12px 25px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-button:hover {
+            transform: translateY(-3px);
+            background: var(--header-button);
+            color: var(--text-light);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+        }
+
+        .logout-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ff4d4d;
+            border-color: #ff4d4d;
+            background: rgba(255, 77, 77, 0.1);
+        }
+
+        .logout-button i {
+            font-size: 1.2rem;
+        }
+
+        .logout-button:hover {
+            background: #ff4d4d;
+            color: var(--text-light);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+
+        .title-container {
+            text-align: center;
+            margin-top: 250px;
+        }
+
+        h1 {
+            font-family: "Dancing Script", cursive;
+            font-size: 6rem;
+            color: var(--text-light);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        h3 {
+            font-size: 2rem;
+            color: var(--vote-button);
+        }
+
+        .carousel-container {
+            padding: 20px 0;
+            display: flex;
+            justify-content: center;
+            margin-top: 150px;
+            margin-bottom:50px;
+        }
+
+        .swiper-slide {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 400px;
+            height: 600px;
+            background: linear-gradient(135deg, rgba(47, 51, 92, 0.3), rgba(47, 51, 92, 0.3));
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+            position: relative; /* For positioning info box */
+        }
+
+        .swiper-slide:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(47, 51, 92, 0.5);
+        }
+
+        .slide-img img {
+            width: 100%;
+            height: 75%;
+            object-fit: cover;
+        }
+
+        .slide-content h2 {
+            font-size: 2rem;
+            color: var(--text-light);
+            margin-top: 15px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+        }
+
+        .candidate-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(47, 51, 92, 0.9); /* Slightly darker than carousel */
+            color: var(--text-light);
+            padding: 15px;
+            font-size: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none; /* Prevents interaction with text box */
+        }
+
+        .swiper-slide:hover .candidate-info {
+            opacity: 1;
+        }
+
+        .voting-button {
+            font-size: 2rem;
+            color: var(--text-light);
+            background: transparent;
+            border: 2px solid var(--text-light);
+            cursor: pointer;
+            padding: 15px 40px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-top: 20px;
+            font-weight: bold;
+            margin-bottom: 300px;
+        }
+
+        .voting-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            background: var(--vote-button);
+            color: var(--text-light);
+        }
+    </style>
+</head>
+<body>
+    <div class="starry-bg" id="starry-bg"></div>
+    <div class="scene">
+        <header>
+            <div class="logo">
+                <img src="Clubs.png" alt="Orion Logo">
+            </div>
+            <nav>
+                <button class="nav-button">Home</button>
+                <button class="nav-button" ><a href="#carousel-container" style="color: #ffffff;">Parties</a></button>
+                <button class="nav-button"><a href="#graph-container" style="color: #ffffff;">Charts</a></button>
+                <button class="nav-button logout-button">
+                    <i class="fas fa-power-off"></i> 
+                </button>
+            </nav>
+        </header>
+
+        <section id="election">
+            <div class="title-container">
+                <h1>Orion University Election 2025</h1>
+                <button class="voting-button" onclick="window.location.href='instructions.html'">Vote now</button>
+            </div>
+
+            <div id= "carousel-container" class="carousel-container">
+                <div class="swiper slider">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="slide-img">
+                                <img src="diamond-Photoroom.png" alt="Diamond">
+                            </div>
+                            <div class="slide-content">
+                                <h2>Diamond</h2>
+                            </div>
+                            <div class="candidate-info">
+                                <p>Name: Diamond Blue<br>Age: 40<br>Platform: Technological Innovation</p>
+                            </div>
+                        </div>                        
+                        <div class="swiper-slide">
+                            <div class="slide-img">
+                                <img src="clover-Photoroom.png" alt="Clover">
+                            </div>
+                            <div class="slide-content">
+                                <h2>Clover</h2>
+                            </div>
+                            <div class="candidate-info">
+                                <p>Name: Clover Green<br>Age: 35<br>Platform: Environmental Sustainability</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="slide-img">
+                                <img src="spade-Photoroom.png" alt="Spade">
+                            </div>
+                            <div class="slide-content">
+                                <h2>Spade</h2>
+                            </div>
+                            <div class="candidate-info">
+                                <p>Name: Spade Black<br>Age: 42<br>Platform: Economic Growth</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="slide-img">
+                                <img src="heart-Photoroom.png" alt="Heart">
+                            </div>
+                            <div class="slide-content">
+                                <h2>Heart</h2>
+                            </div>
+                            <div class="candidate-info">
+                                <p>Name: Heart Red<br>Age: 38<br>Platform: Social Equality</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+     .graph-container {
+        width: 1500px;
+        height: 800px;
+        margin: 30px auto; /* Centers horizontally */
+        margin-top: 300px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(32, 178, 170, 0.9);
+        display: flex;
+        justify-content: center;
+        align-items:center;
+
+         }
+     </style>
+     <div id="graph-container" class="graph-container">
+        <canvas id="voteChart"></canvas>
+    </div>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <script>
+        <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+</script>
+<script>
+     const votingEndTime = new Date().getTime() + 2000;
+     function checkTime() {
+     const currentTime = new Date().getTime();
+    if (currentTime >= votingEndTime) {
+         window.location.href = "winner.html";
+    } 
+    else {
+        setTimeout(checkTime, 1000); // Check every second
+    }
+}
+</script>
+<script>
+    function applyCelebrationTheme() {
+        document.getElementById("themeStylesheet").href = "celebrations.css"; // Change CSS file
+    }
+
+    if (new Date().getTime() >= votingEndTime) {
+        applyCelebrationTheme();
+    }
+</script>
+
+
+
+checkTime(); // Start checking the time
+
+</script>
+<script>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Starry background generation
+        const starryBg = document.getElementById('starry-bg');
+        if (starryBg) {
+            const numStars = 100;
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = `${Math.random() * 3 + 1}px`;
+                star.style.height = star.style.width;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 2}s`;
+                starryBg.appendChild(star);
+            }
+        }
+
+        // Initialize Swiper
+        var swiper = new Swiper(".slider", {
+            loop: true,
+            slidesPerView: 1.5,
+            spaceBetween: 30,
+            centeredSlides: true,
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+        });
+
+        // Logout button action
+        const logoutButton = document.querySelector(".logout-button");
+        if (logoutButton) {
+            logoutButton.addEventListener("click", function () {
+                alert("You have been logged out.");
+                window.location.href = "login.html";
+            });
+        }
+
+        // Function to create gradient for chart bars
+        function createGradient(ctx, color1, color2) {
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, color1);
+            gradient.addColorStop(1, color2);
+            return gradient;
+        }
+
+        // Fetch updated vote counts from local storage
+        function getVoteCounts() {
+        return JSON.parse(localStorage.getItem("voteCounts")) || {
+        CandidateA: 0,
+        CandidateB: 0,
+        CandidateC: 0,
+        CandidateD: 0
+    };
+}
+
+
+        let voteCounts = getVoteCounts();
+
+        // Vote chart
+        const ctx = document.getElementById("voteChart").getContext("2d");
+        const gradientA = createGradient(ctx, "#ff6384", "#ff8f9b");
+        const gradientB = createGradient(ctx, "#36a2eb", "#70c0ff");
+        const gradientC = createGradient(ctx, "#ffce56", "#ffde80");
+        const gradientD = createGradient(ctx, "#4bc0c0", "#73d4d4");
+
+        window.voteChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: Object.keys(voteCounts),
+                datasets: [{
+                    label: "Votes",
+                    data: Object.values(voteCounts),
+                    backgroundColor: [gradientA, gradientB, gradientC, gradientD],
+                    borderColor: ["#ff6384", "#36a2eb", "#ffce56", "#4bc0c0"],
+                    borderWidth: 2,
+                    borderRadius: 10,
+                    hoverBackgroundColor: ["#ff2d55", "#007aff", "#ffcc00", "#34c759"]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: "rgba(255, 255, 255, 0.2)" },
+                        ticks: { color: "#ffffff" }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: "#ffffff" }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: "rgba(0, 0, 0, 0.7)",
+                        titleColor: "#ffffff",
+                        bodyColor: "#ffffff",
+                        borderWidth: 1,
+                        borderColor: "#ffffff",
+                        cornerRadius: 8
+                    }
+                },
+                animation: {
+                    duration: 1500,
+                    easing: "easeInOutBounce"
+                }
+            }
+        });
+
+        // Periodically update chart
+        setInterval(() => {
+            voteCounts = getVoteCounts();
+            window.voteChart.data.datasets[0].data = Object.values(voteCounts);
+            window.voteChart.update();
+        }, 3000);
+    });
+</script>
+
+<!-- Vote Chart -->
+<canvas id="voteChart" width="400" height="200"></canvas>
+
+</script>
+</body>
+</html>

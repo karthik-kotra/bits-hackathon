@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Election</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" id="themeStylesheet" href="style.css"> <!-- Added theme stylesheet link -->
+    
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+        @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap");
+        @import url('https://fonts.googleapis.com/css2?family=Glacial+Indifference&display=swap'); /* Added Glacial Indifference for celebration theme */
+
+        :root {
+            --header-color: #1e224e;
+            --carousel-transparent: #2f335c;
+            --header-button: #4c507e;
+            --vote-button: #404573;
+            --background-color: #0d1b2a;
+            --text-light: #ffffff;
+            --header-height: 70px;
+            --star-color: #ffffff;
+            /* Celebration theme variables */
+            --header-color-celebration: #ffcc00;
+            --background-color-celebration: #1e224e;
+            --text-light-celebration: #ffffff;
+            --winner-color: #ff4081;
+            --confetti-bg: url('https://www.transparenttextures.com/patterns/confetti.png');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            text-decoration: none;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: "Montserrat", sans-serif;
+            background: var(--background-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .starry-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background: var(--star-color);
+            border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+            transition: transform 0.2s ease;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .scene {
+            min-height: 100vh;
+            padding-top: var(--header-height);
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            height: var(--header-height);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo img {
+            height: 55px;
+            width: 55px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .nav-button {
+            background: transparent;
+            border: 2px solid var(--text-light);
+            border-radius: 15px;
+            padding: 12px 25px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-button:hover {
+            transform: translateY(-3px);
+            background: var(--header-button);
+            color: var(--text-light);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+        }
+
+        .logout-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ff4d4d;
+            border-color: #ff4d4d;
+            background: rgba(255, 77, 77, 0.1);
+        }
+
+        .logout-button i {
+            font-size: 1.2rem;
+        }
+
+        .logout-button:hover {
+            background: #ff4d4d;
+            color: var(--text-light);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+
+        .title-container {
+            text-align: center;
+            margin-top: 250px;
+        }
+
+        h1 {
+            font-family: "Dancing Script", cursive;
+            font-size: 6rem;
+            color: var(--text-light);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        h3 {
+            font-size: 2rem;
+            color: var(--vote-button);
+        }
+
+        .carousel-container {
+            padding: 20px 0;
+            display: flex;
+            justify-content: center;
+            margin-top: 150px;
+            margin-bottom: 50px;
+        }
+
+        .swiper-slide {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 400px;
+            height: 600px;
+            background: linear-gradient(135deg, rgba(47, 51, 92, 0.3), rgba(47, 51, 92, 0.3));
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .swiper-slide:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(47, 51, 92, 0.5);
+        }
+
+        .slide-img img {
+            width: 100%;
+            height: 75%;
+            object-fit: cover;
+        }
+
+        .slide-content h2 {
+            font-size: 2rem;
+            color: var(--text-light);
+            margin-top: 15px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+        }
+
+        .candidate-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(47, 51, 92, 0.9);
+            color: var(--text-light);
+            padding: 15px;
+            font-size: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .swiper-slide:hover .candidate-info {
+            opacity: 1;
+        }
+
+        .voting-button {
+            font-size: 2rem;
+            color: var(--text-light);
+            background: transparent;
+            border: 2px solid var(--text-light);
+            cursor: pointer;
+            padding: 15px 40px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-top: 20px;
+            font-weight: bold;
+            margin-bottom: 300px;
+        }
+
+        .voting-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            background: var(--vote-button);
+            color: var(--text-light);
+        }
+
+        /* Celebration Theme Styles (applied dynamically via celebration.css) */
+        .celebration-active body {
+            background-color: var(--background-color-celebration);
+            background-image: var(--confetti-bg);
+            background-size: cover;
+            color: var(--text-light-celebration);
+            font-family: 'Glacial Indifference', sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .celebration-active header {
+            background-color: var(--header-color-celebration);
+            color: #1e224e;
+            padding: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .winner-announcement {
+            margin-top: 50px;
+            font-size: 30px;
+            font-weight: bold;
+            animation: glow 1.5s infinite alternate;
+            color: var(--winner-color);
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px #ff4081, 0 0 20px #ff80ab; }
+            100% { text-shadow: 0 0 20px #ff4081, 0 0 30px #ff80ab; }
+        }
+
+        .confetti-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        @keyframes fireworks {
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0; transform: scale(1.5); }
+        }
+
+        .firework {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--winner-color);
+            border-radius: 50%;
+            opacity: 0;
+            animation: fireworks 1.5s ease-in-out infinite;
+        }
+
+        #winner-name {
+            font-size: 50px;
+            font-weight: bold;
+            text-transform: uppercase;
+            animation: winner-pop 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes winner-pop {
+            0% { transform: scale(1); color: #ff4081; }
+            100% { transform: scale(1.1); color: #ff80ab; }
+        }
+    </style>
+</head>
+<body>
+    <div class="starry-bg" id="starry-bg"></div>
+    <div class="confetti-animation" id="confetti-animation"></div> <!-- Added for fireworks -->
+    <div class="scene">
+        <header>
+            <div class="logo">
+                <img src="Clubs (2)/Clubs.png" alt="Orion Logo">
+            </div>
+            <nav>
+                <button class="nav-button">Home</button>
+                <button class="nav-button" href="#carousel-container">Parties</button>
+                <button class="nav-button">Login</button>
+                <button class="nav-button logout-button">
+                    <i class="fas fa-power-off"></i> 
+                </button>
+            </nav>
+        </header>
+
+        <section id="election">
+            <div class="title-container">
+                <h1>Orio University Elections 2025</h1>
+                <div class="winner-announcement" id="winner-announcement" style="display: none;">
+                    <p>We have a winner!</p>
+                    <p id="winner-name">Clover Green</p> <!-- Simulated winner -->
+                </div>
+                <button class="voting-button" id="vote-now-button" onclick="window.location.href='instructions.html'">Vote now</button>
+            </div>
+
+            <div class="carousel-container" id="carousel-container">
+                <div class="swiper slider">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="slide-img">
+                                <img src="Clubs (2)/1.jpg" alt="Clover">
+                            </div>
+                            <div class="slide-content">
+                                <h2>Clover</h2>
+                            </div>
+                            <div class="candidate-info">
+                                <p>Name: Clover Green<br>Age: 35<br>Platform: Environmental Sustainability</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="slide-img">
+                                <img src="Clubs (2)/2.jpg" alt="Spade">
+                            </div>
+                            <div class="slide-content">
+                                <h2>Spade</h2>
+                            </div>
+                            <div class="candidate-info">
+                                <p>Name: Spade Black<br>Age: 42<br>Platform: Economic Growth</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="slide-img">
+                                <img src="Clubs (2)/3.jpg" alt="Heart">
+                            </div>
+                            <div class="slide-content">
+                                <h2>Heart</h2>
+                            </div>
+                            <div class="candidate-info">
+                                <p>Name: Heart Red<br>Age: 38<br>Platform: Social Equality</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Starry background generation
+            const starryBg = document.getElementById('starry-bg');
+            const numStars = 100;
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = `${Math.random() * 3 + 1}px`;
+                star.style.height = star.style.width;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 2}s`;
+                starryBg.appendChild(star);
+            }
+
+            // Star reaction to cursor
+            document.addEventListener('mousemove', (e) => {
+                const stars = document.querySelectorAll('.star');
+                stars.forEach(star => {
+                    const rect = star.getBoundingClientRect();
+                    const starX = rect.left + rect.width / 2;
+                    const starY = rect.top + rect.height / 2;
+                    const dx = e.clientX - starX;
+                    const dy = e.clientY - starY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 100) {
+                        const scale = 1 + (100 - distance) / 50;
+                        star.style.transform = `scale(${scale})`;
+                        star.style.boxShadow = `0 0 10px rgba(255, 255, 255, ${1 - distance/100})`;
+                    } else {
+                        star.style.transform = 'scale(1)';
+                        star.style.boxShadow = 'none';
+                    }
+                });
+            });
+
+            // Swiper initialization
+            var swiper = new Swiper(".slider", {
+                loop: true,
+                slidesPerView: 1.5,
+                spaceBetween: 30,
+                centeredSlides: true,
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false,
+                },
+            });
+
+            // Stop carousel on hover
+            const slider = document.querySelector('.slider');
+            slider.addEventListener('mouseenter', () => {
+                swiper.autoplay.stop();
+            });
+            slider.addEventListener('mouseleave', () => {
+                swiper.autoplay.start();
+            });
+
+            // Logout button
+            const logoutButton = document.querySelector(".logout-button");
+            if (logoutButton) {
+                logoutButton.addEventListener("click", function () {
+                    alert("You have been logged out.");
+                    window.location.href = "login.html";
+                });
+            }
+
+            // Theme switching for celebration
+            const votingEndTime = new Date("2025-03-23T00:00:00").getTime(); // Set voting end time to March 23, 2025
+            function applyCelebrationTheme() {
+                document.getElementById("themeStylesheet").href = "celebration.css"; // Change CSS file
+                document.body.classList.add("celebration-active"); // Add class to apply celebration styles
+
+                // Hide voting elements and show winner announcement
+                document.querySelector(".voting-button").style.display = "none";
+                document.querySelector(".carousel-container").style.display = "none";
+                document.querySelector("#winner-announcement").style.display = "block";
+
+                // Generate fireworks
+                const confettiContainer = document.getElementById("confetti-animation");
+                for (let i = 0; i < 50; i++) {
+                    const firework = document.createElement("div");
+                    firework.className = "firework";
+                    firework.style.left = `${Math.random() * 100}%`;
+                    firework.style.top = `${Math.random() * 100}%`;
+                    firework.style.animationDelay = `${Math.random() * 1.5}s`;
+                    confettiContainer.appendChild(firework);
+                }
+            }
+
+            if (new Date().getTime() >= votingEndTime) {
+                applyCelebrationTheme();
+            }
+        });
+    </script>
+</script>
+</body>
+</html>
