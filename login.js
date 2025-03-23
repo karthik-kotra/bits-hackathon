@@ -1,5 +1,5 @@
 document.getElementById("loginForm").addEventListener("submit", async function (event) {
-    event.preventDefault();
+    event.preventDefault(); // Prevent default form submission
 
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
@@ -10,17 +10,20 @@ document.getElementById("loginForm").addEventListener("submit", async function (
     messageBox.style.display = "none";
 
     try {
-        // Fetch CSV file
+        console.log("Fetching CSV file...");
         const response = await fetch("orion_university_students.csv");
+        if (!response.ok) throw new Error("CSV file not found!");
         const csvText = await response.text();
 
-        // Parse CSV
+        console.log("Parsing CSV...");
         const students = csvToJSON(csvText);
+        console.log("CSV Parsed Data:", students);
 
-        // Check credentials
+        console.log("Checking credentials...");
         const validUser = students.find(student => student.Email === email && student.Password === password);
 
         if (validUser) {
+            console.log("✅ Login successful! Redirecting...");
             messageBox.textContent = "✅ Login successful! Redirecting...";
             messageBox.style.color = "green";
             messageBox.style.display = "block";
@@ -30,12 +33,13 @@ document.getElementById("loginForm").addEventListener("submit", async function (
                 window.location.href = "home.html";
             }, 2000);
         } else {
+            console.log("❌ Invalid credentials");
             messageBox.textContent = "❌ Invalid credentials. Please try again.";
             messageBox.style.color = "red";
             messageBox.style.display = "block";
         }
     } catch (error) {
-        console.error("Error reading CSV:", error);
+        console.error("Error:", error);
         messageBox.textContent = "⚠ An error occurred. Please try again later.";
         messageBox.style.color = "orange";
         messageBox.style.display = "block";
