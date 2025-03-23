@@ -1,71 +1,90 @@
-document.getElementById("loginForm").addEventListener("submit", function (event) {
-    event.preventDefault();
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Login</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+</head>
+<body>
 
-    let email = document.getElementById("email").value;
-    let password = document.getElementById("password").value;
+    <h2>Login</h2>
+    <form id="loginForm">
+        <label for="email">Email:</label>
+        <input type="email" id="email" required>
+        <br><br>
 
-    // Simulate fetching user data from CSV (you need a backend to validate this properly)
-    let users = JSON.parse(localStorage.getItem("users")) || {}; // This should be replaced with a real backend call
+        <label for="password">Password:</label>
+        <input type="password" id="password" required>
+        <br><br>
 
-    if (users[email] && users[email].password === password) {
-        if (users[email].voted) {
-            alert("You have already voted.");
-            window.location.href = "index.html"; // Redirect to main page
-        } else {
-            localStorage.setItem("currentUser", email);
-            window.location.href = "voting.html"; // Redirect to voting page
+        <button type="submit">Login</button>
+    </form>
+
+    <p id="message" style="display: none;"></p>
+    <div id="loader" style="display: none;">Loading...</div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const messageBox = document.getElementById("message");
+            const loader = document.getElementById("loader");
+
+            // Show loader and hide message
+            loader.style.display = "block";
+            messageBox.style.display = "none";
+
+            // Fetch and read CSV file
+            fetch("orion_university_students.csv")
+                .then(response => response.text())
+                .then(csvText => {
+                    // Parse CSV using PapaParse
+                    Papa.parse(csvText, {
+                        header: true,
+                        skipEmptyLines: true,
+                        complete: function (results) {
+                            const students = results.data; // Array of student objects
+                            checkCredentials(students, email, password);
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error("Error reading CSV:", error);
+                    messageBox.textContent = "⚠ Error loading data.";
+                    messageBox.style.color = "orange";
+                    messageBox.style.display = "block";
+                })
+                .finally(() => {
+                    setTimeout(() => {
+                        loader.style.display = "none";
+                    }, 1000);
+                });
+        });
+
+        // Function to check credentials
+        function checkCredentials(students, email, password) {
+            const messageBox = document.getElementById("message");
+
+            const validUser = students.find(student => student.Email === email && student.Password === password);
+
+            if (validUser) {
+                messageBox.textContent = "✅ Login successful! Redirecting...";
+                messageBox.style.color = "green";
+                messageBox.style.display = "block";
+
+                setTimeout(() => {
+                    window.location.href = "home.html"; // Redirect on success
+                }, 2000);
+            } else {
+                messageBox.textContent = "❌ Invalid credentials.";
+                messageBox.style.color = "red";
+                messageBox.style.display = "block";
+            }
         }
-    } else {
-        alert("Invalid email or password.");
-    }
-});
+    </script>
 
-document.getElementById("loginForm").addEventListener("submit", async function (event) {
-    event.preventDefault(); // Prevent form refresh
-
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const messageBox = document.getElementById("message"); // Message display box
-    const loader = document.getElementById("loader"); // Loader animation
-
-    // Show loader
-    loader.style.display = "block";
-    messageBox.style.display = "none";
-
-    try {
-        // Fetch student credentials from JSON
-        const response = await fetch("orion_university_students.csv");
-        const students = await response.json();
-
-        // Simulate delay for buffer effect
-        await new Promise(resolve => setTimeout(resolve, 1500));
-
-        // Check credentials
-        const validUser = students.find(student => student.Email === email && student.Password === password);
-
-        if (validUser) {
-            messageBox.textContent = "✅ Login successful! Redirecting...";
-            messageBox.style.color = "green";
-            messageBox.style.display = "block";
-
-            // Redirect after 2 seconds
-            setTimeout(() => {
-                window.location.href = "home.html";
-            }, 2000);
-        } else {
-            messageBox.textContent = "❌ Invalid credentials. Please try again.";
-            messageBox.style.color = "red";
-            messageBox.style.display = "block";
-        }
-    } catch (error) {
-        console.error("Error fetching student data:", error);
-        messageBox.textContent = "⚠ An error occurred. Please try again later.";
-        messageBox.style.color = "orange";
-        messageBox.style.display = "block";
-    } finally {
-        // Hide loader after login attempt
-        setTimeout(() => {
-            loader.style.display = "none";
-        }, 1000);
-    }
-});
+</body>
+</html>
