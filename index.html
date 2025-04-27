@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login Page</title>
-  <script src="login.js"></script>
-
+  <script src="login.js" defer></script>
   <link rel="stylesheet" href="login.css">
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
   <style>
@@ -134,19 +133,26 @@
         <div class="inputBx">
           <input type="password" id="password" placeholder="Password" required>
         </div>
-        <!-- Loader (Hidden by Default) -->
-<div id="loader" class="loader" style="display: none;"></div>
-
-<!-- Message Box (Hidden by Default) -->
-<p id="message" style="display: none; font-size: 14px; text-align: center;"></p>
-
         <div class="inputBx">
           <input type="submit" value="Sign in">
         </div>
       </form>
     </div>
   </div>
-
-  <script src="login.js"></script>
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent default form submission
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      
+      // Basic validation or authentication logic here
+      if (email && password) {
+        // Redirect to home.html
+        window.location.href = "home.html";
+      } else {
+        alert("Please enter valid credentials!");
+      }
+    });
+  </script>
 </body>
 </html>
